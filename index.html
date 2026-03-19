@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CubeRealm.io - Multiplayer Block Game</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+</head>
+<body>
+    <!-- Main Game Container -->
+    <div id="gameContainer">
+        <canvas id="gameCanvas"></canvas>
+    </div>
+
+    <!-- HUD (Heads Up Display) -->
+    <div id="hud">
+        <div class="hud-section" id="playerInfo">
+            <div class="hud-label">Player</div>
+            <div id="playerName">Loading...</div>
+            <div class="hud-stat">Health: <span id="playerHealth">100</span>/100</div>
+            <div class="hud-stat">Score: <span id="playerScore">0</span></div>
+            <div class="hud-stat">Kills: <span id="playerKills">0</span></div>
+        </div>
+
+        <div class="hud-section" id="gameInfo">
+            <div class="hud-label">Game Info</div>
+            <div class="hud-stat">Players: <span id="playerCount">1</span></div>
+            <div class="hud-stat">Time: <span id="gameTime">10:00</span></div>
+            <div class="hud-stat">FPS: <span id="fps">60</span></div>
+        </div>
+
+        <div class="hud-section" id="controls">
+            <div class="hud-label">Controls</div>
+            <div class="control-text">WASD - Move</div>
+            <div class="control-text">SPACE - Jump</div>
+            <div class="control-text">LMB - Place Block</div>
+            <div class="control-text">RMB - Destroy Block</div>
+        </div>
+    </div>
+
+    <!-- Menu Overlay -->
+    <div id="menuOverlay" class="overlay active">
+        <div class="menu-box">
+            <h1>CubeRealm.io</h1>
+            <p class="subtitle">Build. Battle. Dominate.</p>
+            
+            <div class="menu-section">
+                <input type="text" id="usernameInput" placeholder="Enter your username" maxlength="20">
+                <button id="playButton" class="btn btn-primary">Play</button>
+            </div>
+
+            <div class="menu-section">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number">∞</div>
+                        <div class="stat-label">Players Online</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">100%</div>
+                        <div class="stat-label">Free to Play</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">24/7</div>
+                        <div class="stat-label">Always Running</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu-section">
+                <button id="settingsButton" class="btn btn-secondary">Settings</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Over Screen -->
+    <div id="gameOverOverlay" class="overlay">
+        <div class="menu-box">
+            <h1>Game Over</h1>
+            <div class="game-over-stats">
+                <div class="stat-row">
+                    <span>Final Score:</span>
+                    <span id="finalScore">0</span>
+                </div>
+                <div class="stat-row">
+                    <span>Kills:</span>
+                    <span id="finalKills">0</span>
+                </div>
+                <div class="stat-row">
+                    <span>Deaths:</span>
+                    <span id="finalDeaths">0</span>
+                </div>
+                <div class="stat-row">
+                    <span>Time Played:</span>
+                    <span id="timePlayed">0:00</span>
+                </div>
+            </div>
+            <button id="playAgainButton" class="btn btn-primary">Play Again</button>
+        </div>
+    </div>
+
+    <!-- Leaderboard -->
+    <div id="leaderboard" class="leaderboard">
+        <div class="leaderboard-header">
+            <h3>Leaderboard</h3>
+            <button id="toggleLeaderboard" class="toggle-btn">−</button>
+        </div>
+        <div class="leaderboard-content" id="leaderboardContent">
+            <div class="leaderboard-entry">
+                <span class="rank">1</span>
+                <span class="name">Loading...</span>
+                <span class="score">0</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settingsModal" class="modal">
+        <div class="modal-content">
+            <h2>Settings</h2>
+            
+            <div class="setting-group">
+                <label>Master Volume</label>
+                <input type="range" id="volumeSlider" min="0" max="100" value="100">
+            </div>
+
+            <div class="setting-group">
+                <label>Graphics Quality</label>
+                <select id="graphicsSelect">
+                    <option value="low">Low</option>
+                    <option value="medium" selected>Medium</option>
+                    <option value="high">High</option>
+                </select>
+            </div>
+
+            <div class="setting-group">
+                <label>
+                    <input type="checkbox" id="showFpsToggle" checked>
+                    Show FPS
+                </label>
+            </div>
+
+            <div class="setting-group">
+                <label>
+                    <input type="checkbox" id="showGridToggle" checked>
+                    Show Grid
+                </label>
+            </div>
+
+            <button id="closeSettingsButton" class="btn btn-secondary">Close</button>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>
